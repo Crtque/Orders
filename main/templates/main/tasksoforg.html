@@ -1,0 +1,39 @@
+{% extends 'main/index.html' %}
+{% load crispy_forms_tags %}
+{% block main %}
+
+<div style="width: 50%; float: left;"><h2 class="text-left">Задачи организации</h2></div>
+
+<form action="" method="POST">
+	{% csrf_token %}
+	<table class="users">
+			<tr class="osn">
+            <td>Информация</td>
+            <td>Автор</td>
+            <td>Дата отправки</td>
+            <td>Ожидаемая дата</td>
+            <td>Статус</td>
+            <td>id</td>
+                <td>Действия</td>
+        </tr>
+		{% for task in orders %}
+			<tr><td>{{ task.info }}</td>
+                    <td>{{ task.author }}</td>
+                    <td>{{ task.sending }}</td>
+                    <td>{{ task.expecting }}</td>
+                    <td>{{ task.status }}</td>
+                    <td>{{ task.id }}</td>
+                <td>
+                    {% if user_group == "Модератор" %}
+                    <button class="btn btn-outline-danger mb-1" type="submit" name="delete" value="{{task.id}}">X</button>
+                    {% endif %}
+                     {% if user_group == "Организация" %}
+                    <button class="btn btn-warning" type="submit" name="decline" value={{task.id}}>Отказаться от заказа</button>
+                         <button class="btn btn-success" type="submit" name="ready" value={{task.id}}>Сообщить о готовности</button>
+                    {% endif %}
+                </td>
+            </tr>
+		{% endfor %}
+	</table>
+</form>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'main/index.html' %}
+{% load crispy_forms_tags %}
+{% block main %}
+
+<div style="width: 50%; float: left;"><h2 class="text-left">Управление организациями</h2></div>
+<div style="width: 50%; float: left; text-align: right;"><a href="#win1"><button class="btn btn-outline-info">Добавить организацию</button></a></div>
+<a href="#x" class="overlay" id="win1"></a>
+<div class="popup">
+	<h3>Создание организации</h3><hr>
+	{% if messages %}
+		{% for mess in messages %}
+			{% if mess.tags == "success" %}
+	        <div class="alert alert-success" style="width:100%; float:left;">
+	          {{ mess }}
+	        </div>
+	        {% else %}
+	        <div class="alert alert-danger" style="width:100%; float:left;">
+	          {{ mess }}
+	        </div>
+	        {% endif %}
+		{% endfor %}
+	{% endif %}
+	<form action="" method="POST">
+		{% csrf_token %}
+		{{ form|crispy }}
+		<div style="width: 100%;">
+				<a href="#close"><input type="submit" value="Создать" name="save" class="btn btn-outline-dark mt-2" style="float: right;"></a>
+			</div>
+		</form>
+<a class="close"title="Закрыть" href="#close"></a>
+</div>
+<form action="" method="POST">
+	{% csrf_token %}
+	<table class="table table-bordered table-dark">
+			<tr class="osn">
+            <td>Назавание</td>
+            <td>Дата основания</td>
+            <td>ФИО Директора</td>
+            <td>Дата рождения директора</td>
+            <td>Список заказов</td>
+            <td>id</td>
+                <td>Действия</td>
+        </tr>
+		{% for org in orgs %}
+			<tr>
+                    <td>{{ org.name }}</td>
+                    <td>{{ org.date}}</td>
+                    <td>{{ org.dirname }}</td>
+                    <td>{{ org.dob }}</td>
+                    <td><a href="/taskoforg/?name={{ org.name }}">Ссылка на заказы фирмы</a></td>
+                    <td>{{ org.id }}</td>
+                <td>
+                    <button class="btn btn-outline-danger mb-1" type="submit" name="delete" value="{{org.id}}">X</button>
+                </td>
+            </tr>
+		{% endfor %}
+	</table>
+</form>
+{% endblock %}

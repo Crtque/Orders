@@ -1,0 +1,29 @@
+{% extends 'main/index.html' %}
+{% block main %}
+	<table class="table table-bordered table-dark" >
+		<legend><h2>ЗАКАЗЫ</h2></legend>
+    {% if user_group == "Модератор" or user_group == "Организация"%}
+	<tr class="osn">
+            <td>Информация</td>
+            <td>Автор</td>
+            <td>Дата отправки</td>
+            <td>Ожидаемая дата</td>
+            <td>Статус</td>
+            <td>id</td>
+        </tr>
+        {% for task in orders %}
+                <tr>
+                    <td>{{ task.info }}</td>
+                    <td>{{ task.author }}</td>
+                    <td>{{ task.sending }}</td>
+                    <td>{{ task.expecting }}</td>
+                    <td>{{ task.status }}</td>
+                    <td>{{ task.id }}</td>
+
+                </tr>
+        {% endfor %}
+        {% else %}
+        <div style="background:indianred;width: 100%;height: 80%;color:white">Общий список заказов доступен только пользователям группы "Модератор" или "Организация"</div>
+    {% endif %}
+	</table>
+{% endblock %}
